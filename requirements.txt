@@ -26,3 +26,4 @@ threadpoolctl==3.6.0
 tzdata==2026.3
 Werkzeug==3.1.8
 guinicorn==21.2.0
+flask-cors==4.1.2
