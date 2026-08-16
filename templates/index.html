@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#030303">
+    <title>AutoML Lite — AI Copilot</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- =========================================================
+         SIDEBAR
+    ========================================================== -->
+    <aside class="sidebar">
+        
+        <div class="brand">
+            <div class="brand-icon">
+                <i data-lucide="bot"></i>
+            </div>
+            <div class="brand-text">
+                <h2>AutoML Lite</h2>
+                <span>AI Copilot Studio</span>
+            </div>
+        </div>
+
+        <nav>
+            <a class="nav-item active">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="upload-cloud"></i>
+                <span>Upload</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="settings-2"></i>
+                <span>Config</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="sparkles"></i>
+                <span>Copilot</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="bar-chart-3"></i>
+                <span>Results</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="chart-no-axes-combined"></i>
+                <span>Viz</span>
+            </a>
+            <a class="nav-item">
+                <i data-lucide="database"></i>
+                <span>Dataset</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="system-status">
+                <span class="status-dot"></span>
+                <span>System Ready</span>
+            </div>
+            <small>Local Machine Learning Engine</small>
+        </div>
+    </aside>
+
+    <!-- =========================================================
+         MAIN CONTENT
+    ========================================================== -->
+    <main>
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <div>
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    Machine Learning Platform
+                </div>
+                <h1>Dashboard</h1>
+                <p>Build, train, and evaluate models with AI guidance.</p>
+            </div>
+            <div class="topbar-actions">
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+                    AI Online
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-icon">
+                    <i data-lucide="brain-circuit"></i>
+                </div>
+                <div>
+                    <div class="hero-label">Autonomous Machine Learning</div>
+                    <h2>Machine learning <span>without the complexity.</span></h2>
+                    <p>Upload a CSV dataset, automatically detect the task, train a model, visualize performance, and receive AI-powered recommendations—all locally.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- METRICS -->
+        <section class="metrics">
+            <div class="metric-card">
+                <div class="metric-top">
+                    <span>Rows</span>
+                    <div class="metric-icon"><i data-lucide="rows-3"></i></div>
+                </div>
+                <h3 id="rows">0</h3>
+                <p>Dataset observations</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-top">
+                    <span>Columns</span>
+                    <div class="metric-icon"><i data-lucide="columns-3"></i></div>
+                </div>
+                <h3 id="cols">0</h3>
+                <p>Dataset features</p>
+            </div>
+            <div class="metric-card">
+                <div class="metric-top">
+                    <span>Missing</span>
+                    <div class="metric-icon"><i data-lucide="circle-alert"></i></div>
+                </div>
+                <h3 id="missing">0</h3>
+                <p>Missing values detected</p>
+            </div>
+        </section>
+
+        <!-- UPLOAD + CONFIG -->
+        <section class="grid-2">
+            <!-- UPLOAD -->
+            <div class="card">
+                <div class="card-heading">
+                    <div class="section-icon"><i data-lucide="upload"></i></div>
+                    <div>
+                        <h3>Upload Dataset</h3>
+                        <p>Import a CSV file to begin.</p>
+                    </div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <input type="file" id="csvFile" accept=".csv">
+                </div>
+                <label class="checkbox">
+                    <input type="checkbox" id="headerToggle" checked>
+                    <span>Dataset contains header row</span>
+                </label>
+                <button id="uploadBtn">
+                    <i data-lucide="upload-cloud"></i>
+                    Upload Dataset
+                </button>
+                <p id="status"></p>
+            </div>
+
+            <!-- CONFIG -->
+            <div class="card">
+                <div class="card-heading">
+                    <div class="section-icon"><i data-lucide="settings-2"></i></div>
+                    <div>
+                        <h3>Configure Training</h3>
+                        <p>Define how your model should train.</p>
+                    </div>
+                </div>
+                <div class="header-detection">
+                    <span>Header Detection</span>
+                    <strong id="headerStatus">—</strong>
+                </div>
+                <label for="targetSelect">Target Variable</label>
+                <select id="targetSelect"></select>
+
+                <label for="taskSelect">Task Type</label>
+                <select id="taskSelect">
+                    <option value="Classification">Classification</option>
+                    <option value="Regression">Regression</option>
+                </select>
+
+                <label for="modelSelect">Model</label>
+                <select id="modelSelect"></select>
+
+                <button id="trainBtn">
+                    <i data-lucide="play"></i>
+                    Train Model
+                </button>
+            </div>
+        </section>
+
+        <!-- AI COPILOT -->
+        <section class="card copilot-card">
+            <div class="card-heading">
+                <div class="section-icon ai-icon"><i data-lucide="sparkles"></i></div>
+                <div>
+                    <h3>AI Copilot</h3>
+                    <p>Intelligent model recommendations</p>
+                </div>
+                <div class="ai-status" style="margin-left: auto;">
+                    <span class="status-dot"></span>
+                    Online
+                </div>
+            </div>
+            <div id="copilotText" class="copilot-content">
+                <div class="copilot-empty">
+                    <i data-lucide="bot"></i>
+                    <div>
+                        <strong>AI Copilot is ready</strong>
+                        <p>Upload and train a model to receive insights.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="card">
+            <div class="card-heading">
+                <div class="section-icon"><i data-lucide="bar-chart-3"></i></div>
+                <div>
+                    <h3>Evaluation Results</h3>
+                    <p>Model performance metrics &amp; analysis</p>
+                </div>
+            </div>
+            <div id="results">
+                <div class="copilot-empty">
+                    <i data-lucide="activity"></i>
+                    <div>
+                        <strong>No model trained yet</strong>
+                        <p>Upload a dataset and train a model to see results.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VISUALIZATION -->
+        <section class="card">
+            <div class="card-heading">
+                <div class="section-icon"><i data-lucide="chart-no-axes-combined"></i></div>
+                <div>
+                    <h3>Visualization</h3>
+                    <p>Confusion matrix, actual vs. predicted, and feature importance</p>
+                </div>
+            </div>
+            <div class="visualization-container">
+                <img id="plotImage" style="display:none;" alt="Model visualization">
+            </div>
+        </section>
+
+        <!-- STATISTICS -->
+        <section class="card">
+            <div class="card-heading">
+                <div class="section-icon"><i data-lucide="sigma"></i></div>
+                <div>
+                    <h3>Descriptive Statistics</h3>
+                    <p>Numerical summary of your dataset</p>
+                </div>
+            </div>
+            <div id="statistics" class="table-container"></div>
+        </section>
+
+        <!-- DATASET PREVIEW -->
+        <section class="card">
+            <div class="card-heading">
+                <div class="section-icon"><i data-lucide="table-2"></i></div>
+                <div>
+                    <h3>Dataset Preview</h3>
+                    <p>First five rows of your uploaded dataset</p>
+                </div>
+                <span style="margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px; font-size: 10px; color: var(--muted); border: 1px solid var(--border);">CSV</span>
+            </div>
+            <div id="preview" class="table-container"></div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="text-align: center; margin-top: 40px; color: var(--muted-2); font-size: 12px; letter-spacing: 0.5px;">
+            <span style="display: block; font-weight: 600; color: var(--muted);">AutoML Lite</span>
+            <span>Local Machine Learning Platform · AI Copilot Engine</span>
+        </footer>
+
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script>lucide.createIcons();</script>
+
+</body>
+</html>
